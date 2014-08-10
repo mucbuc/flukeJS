@@ -14,25 +14,27 @@ usage
 =====
 
     var source = 'A { B( C ); };'
-      , rules = { 'open': '{' };
+        , rules = { 'open': '{' };
 
     //get a single token:
-    fluke.splitNext( source, function( type, lhs, source ) {
+    fluke.splitNext( source, function( type, lhs, rhs, token ) {
         assert( type == 'open' ); 
-        assert( lhs.trim() == 'A' );
-        assert( source.trim() == 'B( C ); };' ); 
+        assert( lhs == 'A ' );
+        assert( rhs == ' B( C ); };' );
+        assert( token == '{' ); 
       }, rules );
-  
+    
     //get all tokens: 
-    fluke.splitAll( source, function( type, lhs, source ) {
+    fluke.splitAll( source, function( type, lhs, rhs, token ) {
         assert( type == 'open' || type == 'end' ); 
-
+        
         if (type == 'open') {
-          assert( lhs.trim() == 'A' );
-          assert( source.trim() == 'B( C ); };'); 
+          assert( lhs == 'A ' );
+          assert( rhs == ' B( C ); };'); 
+          assert( token == '{' );
         }
         else {
-          assert( source.trim() == 'B( C ); };' );
+          assert( rhs == ' B( C ); };' );
         }
       }, rules ); 
 

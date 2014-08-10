@@ -1,0 +1,26 @@
+{
+  "name": "flukejs",
+  "version": "0.0.1",
+  "description": "tokenizer, lexer",
+  "main": "fluke.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mucbuc/flukejs.git"
+  },
+  "keywords": [
+    "tokenizer",
+    "lexer"
+  ],
+  "author": "mark busenitz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mucbuc/flukejs/issues"
+  },
+  "homepage": "https://github.com/mucbuc/flukejs",
+  "dependencies": {
+    "mucbuc-jsthree": "*"
+  }
+}
