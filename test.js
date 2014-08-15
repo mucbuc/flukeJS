@@ -37,7 +37,7 @@ function testWikiExample() {
         assert( token == '{' );
       }
       else {
-        assert( rhs == ' B( C ); };' );
+        assert( lhs == ' B( C ); };' );
       }
     }, rules ); 
 }
@@ -51,10 +51,10 @@ function testSplitNoRuleEmptySource( emitter ) {
 }
 
 function testSplitNoRule( emitter ) {
-  emitter.expect( 'end', '', '{' ); 
+  emitter.expect( 'end', '{' ); 
   fluke.splitNext( '{', emitter.emit.bind( emitter ), [] );
   
-  emitter.expect( 'end', '', '{' ); 
+  emitter.expect( 'end', '{' ); 
   fluke.splitAll( '{', emitter.emit.bind( emitter ), [] );
 }
 

@@ -14,7 +14,7 @@ function splitNext(source, cb, rules) {
       }
     }
   }
-  cb( 'end', '', source );
+  cb( 'end', source );
   
   function makeRegExp( rules ) {
     return new RegExp( '.*?(' + rules + ')' );
