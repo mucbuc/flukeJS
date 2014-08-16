@@ -7,14 +7,17 @@ function splitNext(source, cb, rules) {
     for (property in rules) {
       var token = matches[0].match( makeRegExp( rules[property] ) );
       if (token) {
-        var lhs = token.input.replace( new RegExp( rules[property] ), '' );
-        var rhs = source.substr( token.input.length, source.length );
-        cb( property, lhs, rhs, token[1] );
+        var response = {
+          lhs: token.input.replace( new RegExp( rules[property] ), '' ),
+          rhs: source.substr( token.input.length, source.length ),
+          token: token[1]
+        };
+        cb( property, response );
         return;
       }
     }
   }
-  cb( 'end', source );
+  cb( 'end', { lhs: source } );
   
   function makeRegExp( rules ) {
     return new RegExp( '.*?(' + rules + ')' );
@@ -33,9 +36,15 @@ function splitNext(source, cb, rules) {
 function splitAll(source, cb, rules) {
   var done = false;
   do {
-    splitNext( source, function(event, lhs, rhs, token) {
+    splitNext( source, function(event, response) {
         if (event == 'end') done = true;
-        cb( event, lhs, source = rhs, token );
+        else {
+          source = response.rhs;
+          response.consume = function(length) {
+            source = source.substr( length, source.length );
+          };
+        }
+        cb( event, response );
       }, 
       rules );
   } 

@@ -14,55 +14,66 @@ test( testSplitEmptySource );
 test( testSplitNoRule );
 test( testSplitNoRuleEmptySource ); 
 test( testWikiExample );
+test( testConsume ); 
+
+function testConsume(emitter) {
+  emitter.expect( 'open' );
+  emitter.expectNot( 'statement' );
+  fluke.splitAll( '{;', function( type, response ) { 
+    if (type !== 'end') 
+      response.consume( 1 ); 
+    emitter.emit( type, response );
+  }, defaultMap() );
+}
 
 function testWikiExample() {
   var source = 'A { B( C ); };'
       , rules = { 'open': '{' };
 
   //get a single token:
-  fluke.splitNext( source, function( type, lhs, rhs, token ) {
+  fluke.splitNext( source, function( type, response ) {
       assert( type == 'open' ); 
-      assert( lhs == 'A ' );
-      assert( rhs == ' B( C ); };' );
-      assert( token == '{' ); 
+      assert( response.lhs == 'A ' );
+      assert( response.rhs == ' B( C ); };' );
+      assert( response.token == '{' ); 
     }, rules );
   
   //get all tokens: 
-  fluke.splitAll( source, function( type, lhs, rhs, token ) {
+  fluke.splitAll( source, function( type, response ) {
       assert( type == 'open' || type == 'end' ); 
       
       if (type == 'open') {
-        assert( lhs == 'A ' );
-        assert( rhs == ' B( C ); };'); 
-        assert( token == '{' );
+        assert( response.lhs == 'A ' );
+        assert( response.rhs == ' B( C ); };'); 
+        assert( response.token == '{' );
       }
       else {
-        assert( lhs == ' B( C ); };' );
+        assert( response.lhs == ' B( C ); };' );
       }
     }, rules ); 
 }
 
 function testSplitNoRuleEmptySource( emitter ) {
-  emitter.expect( 'end', '' ); 
+  emitter.expect( 'end', { lhs: '' } ); 
   fluke.splitNext( '', emitter.emit.bind( emitter ), [] );
   
-  emitter.expect( 'end', '' ); 
+  emitter.expect( 'end', { lhs: '' } ); 
   fluke.splitAll( '', emitter.emit.bind( emitter ), [] );
 }
 
 function testSplitNoRule( emitter ) {
-  emitter.expect( 'end', '{' ); 
+  emitter.expect( 'end', { lhs: '{' } ); 
   fluke.splitNext( '{', emitter.emit.bind( emitter ), [] );
   
-  emitter.expect( 'end', '{' ); 
+  emitter.expect( 'end', { lhs: '{' } ); 
   fluke.splitAll( '{', emitter.emit.bind( emitter ), [] );
 }
 
 function testSplitEmptySource( emitter ) {
-  emitter.expect( 'end', '' ); 
+  emitter.expect( 'end', { lhs: '' } ); 
   splitNext( '', emitter ); 
   
-  emitter.expect( 'end', '' ); 
+  emitter.expect( 'end', { lhs: '' } ); 
   splitAll( '', emitter ); 
 }
 
