@@ -17,24 +17,24 @@ usage
         , rules = { 'open': '{' };
 
     //get a single token:
-    fluke.splitNext( source, function( type, lhs, rhs, token ) {
+    fluke.splitNext( source, function( type, response ) {
         assert( type == 'open' ); 
-        assert( lhs == 'A ' );
-        assert( rhs == ' B( C ); };' );
-        assert( token == '{' ); 
+        assert( response.lhs == 'A ' );
+        assert( response.rhs == ' B( C ); };' );
+        assert( response.token == '{' ); 
       }, rules );
     
     //get all tokens: 
-    fluke.splitAll( source, function( type, lhs, rhs, token ) {
+    fluke.splitAll( source, function( type, response ) {
         assert( type == 'open' || type == 'end' ); 
         
         if (type == 'open') {
-          assert( lhs == 'A ' );
-          assert( rhs == ' B( C ); };'); 
-          assert( token == '{' );
+          assert( response.lhs == 'A ' );
+          assert( response.rhs == ' B( C ); };'); 
+          assert( response.token == '{' );
         }
         else {
-          assert( rhs == ' B( C ); };' );
+          assert( response.lhs == ' B( C ); };' );
         }
       }, rules ); 
 
