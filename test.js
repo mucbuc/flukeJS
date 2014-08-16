@@ -46,9 +46,11 @@ function testWikiExample() {
         assert( response.lhs == 'A ' );
         assert( response.rhs == ' B( C ); };'); 
         assert( response.token == '{' );
+        assert( response.stash == '' );
       }
       else {
         assert( response.lhs == ' B( C ); };' );
+        assert( response.stash == 'A {' );
       }
     }, rules ); 
 }
@@ -57,7 +59,7 @@ function testSplitNoRuleEmptySource( emitter ) {
   emitter.expect( 'end', { lhs: '' } ); 
   fluke.splitNext( '', emitter.emit.bind( emitter ), [] );
   
-  emitter.expect( 'end', { lhs: '' } ); 
+  emitter.expect( 'end', { lhs: '', stash: '' } ); 
   fluke.splitAll( '', emitter.emit.bind( emitter ), [] );
 }
 
@@ -65,7 +67,7 @@ function testSplitNoRule( emitter ) {
   emitter.expect( 'end', { lhs: '{' } ); 
   fluke.splitNext( '{', emitter.emit.bind( emitter ), [] );
   
-  emitter.expect( 'end', { lhs: '{' } ); 
+  emitter.expect( 'end', { lhs: '{', stash: '' } ); 
   fluke.splitAll( '{', emitter.emit.bind( emitter ), [] );
 }
 
@@ -73,7 +75,7 @@ function testSplitEmptySource( emitter ) {
   emitter.expect( 'end', { lhs: '' } ); 
   splitNext( '', emitter ); 
   
-  emitter.expect( 'end', { lhs: '' } ); 
+  emitter.expect( 'end', { lhs: '', stash: '' } ); 
   splitAll( '', emitter ); 
 }
 

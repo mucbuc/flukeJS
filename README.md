@@ -32,9 +32,11 @@ usage
           assert( response.lhs == 'A ' );
           assert( response.rhs == ' B( C ); };'); 
           assert( response.token == '{' );
+          assert( response.stash == '' );
         }
         else {
           assert( response.lhs == ' B( C ); };' );
+          assert( response.stash == 'A {' );
         }
       }, rules ); 
 

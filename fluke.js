@@ -11,7 +11,7 @@ function splitNext(source, cb, rules) {
           lhs: token.input.replace( new RegExp( rules[property] ), '' ),
           rhs: source.substr( token.input.length, source.length ),
           token: token[1]
-        };
+         };
         cb( property, response );
         return;
       }
@@ -34,13 +34,19 @@ function splitNext(source, cb, rules) {
 
 // process all tokens in tokens
 function splitAll(source, cb, rules) {
-  var done = false;
+  var done = false
+    , stash = '';
   do {
     splitNext( source, function(event, response) {
+        response.stash = stash;
         if (event == 'end') done = true;
         else {
+          
           source = response.rhs;
+          stash += response.lhs + response.token;
+
           response.consume = function(length) {
+            stash += source.substr( 0, length );
             source = source.substr( length, source.length );
           };
         }
