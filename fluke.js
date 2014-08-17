@@ -49,6 +49,10 @@ function splitAll(source, cb, rules) {
             stash += source.substr( 0, length );
             source = source.substr( length, source.length );
           };
+
+          response.resetStash = function() {
+            stash = '';
+          };
         }
         cb( event, response );
       }, 
