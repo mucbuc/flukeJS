@@ -1,10 +1,10 @@
 {
   "name": "flukejs",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "tokenizer, lexer",
   "main": "fluke.js",
   "scripts": {
-    "test": "node test.js"
+    "test": "mocha -u tdd"
   },
   "repository": {
     "type": "git",
