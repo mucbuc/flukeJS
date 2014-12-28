@@ -2,16 +2,19 @@
 // process next token in source
 function splitNext(source, cb, rules) { 
   
-  var matches = source.match( makeRegExp( joinProperties( rules ) ) );
-  if (matches) {
+  var matchPos = source.search( makeRegExp( joinProperties( rules ) ) );
+  if (matchPos != -1) {
+    var match = source.substr( 0, matchPos )
     for (property in rules) {
-      var token = matches[0].match( makeRegExp( rules[property] ) );
-      if (token) {
+      var tokenLen = rules[property].length
+        , token = source.substr( matchPos, tokenLen );
+      if (token == rules[property])
+      {
         var response = {
-          lhs: token.input.replace( new RegExp( rules[property] ), '' ),
-          rhs: source.substr( token.input.length, source.length ),
-          token: token[1]
-         };
+          lhs: source.substr( 0, matchPos ), 
+          rhs: source.substr( matchPos + tokenLen ),
+          token: token
+        };
         cb( property, response );
         return;
       }
@@ -20,7 +23,7 @@ function splitNext(source, cb, rules) {
   cb( 'end', { lhs: source } );
   
   function makeRegExp( rules ) {
-    return new RegExp( '.*?(' + rules + ')' );
+    return new RegExp( '(' + rules + ')' ); 
   }
 
   function joinProperties(properties) {
@@ -52,6 +55,10 @@ function splitAll(source, cb, rules) {
 
           response.resetStash = function() {
             stash = '';
+          };
+          
+          response.break = function() {
+            done = true; 
           };
         }
         cb( event, response );

@@ -6,6 +6,14 @@ var assert = require( 'assert' )
 
 assert( typeof fluke !== 'undefined' );
 
+suite( 'regression', function() {
+  test( 'bug fix', function() {
+    splitAll( 'namespace hello\n{}', { 'open': '{' } )
+      .expect( 'open', {"lhs":"namespace hello\n","rhs":"}","token":"{","stash":""} )
+      .run();
+  }); 
+}); 
+
 suite( 'splitNext', function(){
   test( 'should match token with event', function() {
     splitNext( ';' )
