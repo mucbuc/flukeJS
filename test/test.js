@@ -24,7 +24,7 @@ suite( 'splitNext', function(){
 
 suite( 'splitAll', function(){
   test( 'should match multiple tokens with event', function() {
-    splitAll( '{;' )
+    splitAll( '{;', { 'open': '{', 'statement': ';' } )
       .expect( 'open' )
       .expect( 'statement' )
       .run(); 

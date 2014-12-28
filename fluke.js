@@ -4,17 +4,17 @@ function splitNext(source, cb, rules) {
   
   var matchPos = source.search( makeRegExp( joinProperties( rules ) ) );
   if (matchPos != -1) {
-    var match = source.substr( 0, matchPos )
+    var match = source.substr( 0, matchPos + 1 )
     for (property in rules) {
-      var tokenLen = rules[property].length
-        , token = source.substr( matchPos, tokenLen );
-      if (token == rules[property])
-      {
-        var response = {
-          lhs: source.substr( 0, matchPos ), 
-          rhs: source.substr( matchPos + tokenLen ),
-          token: token
-        };
+      var rule = rules[property]
+        , re = makeRegExp( rule );
+      if (source.search(re) == matchPos) {
+        var token = source.match( makeRegExp( rule ) )
+          , response = {
+              lhs: source.substr( 0, matchPos ), 
+              rhs: source.substr( matchPos + token[0].length ),
+              token: token[0]
+            };
         cb( property, response );
         return;
       }
