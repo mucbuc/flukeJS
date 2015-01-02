@@ -9,7 +9,7 @@ function splitNext(source, cb, rules) {
       var rule = rules[property]
         , re = makeRegExp( rule );
       if (source.search(re) == matchPos) {
-        var token = source.match( makeRegExp( rule ) )
+        var token = source.match( re )
           , response = {
               lhs: source.substr( 0, matchPos ), 
               rhs: source.substr( matchPos + token[0].length ),
