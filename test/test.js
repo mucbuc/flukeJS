@@ -29,6 +29,13 @@ suite( 'splitAll', function(){
       .expect( 'statement' )
       .run(); 
   });
+
+  test( 'process multiple lines', function() {
+    splitAll( 'abc; abc;', { 'statement': ';' } )
+      .expect( 'statement' )
+      .expect( 'statement' )
+      .run(); 
+  });
 });
 
 suite( 'splitEmpty', function(){
