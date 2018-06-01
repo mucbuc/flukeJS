@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/mucbuc/flukejs",
   "dependencies": {
-    "mocha": "*", 
-    "expector": "*"
+    "expector": "0.0.16",
+    "mocha": "^5.2.0"
   }
 }
